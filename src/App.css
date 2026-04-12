@@ -18,7 +18,7 @@ body {
 }
 
 .student-info {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.15);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -35,8 +35,8 @@ body {
   color: black;
   padding: 15px;
   border-radius: 12px;
+  transition: 0.3s;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
 }
 
 .card:hover {
@@ -62,10 +62,10 @@ body {
 }
 
 .form {
+  margin-top: 30px;
   background: white;
   color: black;
   padding: 20px;
-  margin-top: 30px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -82,18 +82,12 @@ body {
 .form button {
   background: #667eea;
   color: white;
-  border: none;
   padding: 10px;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
 }
 
 .form button:hover {
   background: #5a67d8;
-}
-
-.checkbox {
-  display: flex;
-  gap: 10px;
-  align-items: center;
 }
