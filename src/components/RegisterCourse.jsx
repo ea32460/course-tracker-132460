@@ -34,48 +34,55 @@ function RegisterCourse({ addCourse }) {
 
         addCourse(newCourse);
 
-        // fokusojme inputin pas shtimit per UX me te mire
+        // useRef used to improve UX by focusing input after submit
         inputRef.current.focus();
     };
 
     return (
         <form className="form" onSubmit={handleSubmit}>
-            <h3>Add New Course</h3>
 
+            <h3>Register New Course</h3>
+
+            {/* 1. Course name */}
             <input
                 ref={inputRef}
                 type="text"
                 placeholder="Course name"
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
             />
 
+            {/* 2. Credit hours */}
             <input
                 type="number"
-                placeholder="Credits"
-                onChange={e => setCredits(Number(e.target.value))}
+                placeholder="Credit hours"
+                onChange={(e) => setCredits(Number(e.target.value))}
             />
 
+            {/* 3. Grade */}
             <input
                 type="number"
                 placeholder="Grade (5-10)"
-                onChange={e => setGrade(Number(e.target.value))}
+                onChange={(e) => setGrade(Number(e.target.value))}
             />
 
-            <label className="checkbox">
+            {/* 4. Attending */}
+            <label>
                 <input
                     type="checkbox"
-                    onChange={e => setAttending(e.target.checked)}
+                    onChange={(e) => setAttending(e.target.checked)}
                 />
                 Attending regularly
             </label>
 
-            <select onChange={e => setDifficulty(e.target.value)}>
+            {/* 5. Difficulty */}
+            <select onChange={(e) => setDifficulty(e.target.value)}>
                 <option>Easy</option>
                 <option>Moderate</option>
                 <option>Hard</option>
             </select>
 
             <button type="submit">Register</button>
+
         </form>
     );
 }
