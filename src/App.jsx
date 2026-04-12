@@ -18,7 +18,7 @@ function App() {
       id: 2,
       name: "Operating Systems",
       credits: 6,
-      grade:9,
+      grade: 9,
       attending: true,
       difficulty: "Hard"
     },
@@ -26,7 +26,7 @@ function App() {
       id: 3,
       name: "Databases",
       credits: 6,
-      grade: 9,
+      grade: 7,
       attending: false,
       difficulty: "Moderate"
     },
@@ -34,7 +34,7 @@ function App() {
       id: 4,
       name: "Applied Probability and Statistics",
       credits: 6,
-      grade: 10,
+      grade: 8,
       attending: true,
       difficulty: "Hard"
     },
@@ -50,19 +50,20 @@ function App() {
       id: 6,
       name: "English for IT",
       credits: 3,
-      grade: 10,
+      grade: 9,
       attending: true,
       difficulty: "Easy"
     }
   ]);
 
   const addCourse = useCallback((course) => {
-    // perdor useCallback qe funksioni te mos krijohet perseri pa nevoje
+    // useCallback eviton rikrijimin e funksionit ne cdo render
     setCourses(prev => [...prev, course]);
   }, []);
 
   return (
       <div className="container">
+
         <h1 className="title">Semester Course Tracker</h1>
 
         <div className="student-info">
@@ -78,6 +79,7 @@ function App() {
         </div>
 
         <RegisterCourse addCourse={addCourse} />
+
       </div>
   );
 }
