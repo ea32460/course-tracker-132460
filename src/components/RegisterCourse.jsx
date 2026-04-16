@@ -1,90 +1,120 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 
-function RegisterCourse({ addCourse }) {
+export default function RegisterCourse({ onAddCourse }) {
+    const [formData, setFormData] = useState({
+        name: "",
+        credits: "",
+        grade: "",
+        attending: false,
+        difficulty: "Easy",
+    });
 
-    const [name, setName] = useState("");
-    const [credits, setCredits] = useState(0);
-    const [grade, setGrade] = useState(5);
-    const [attending, setAttending] = useState(false);
-    const [difficulty, setDifficulty] = useState("Easy");
+    // useRef used to focus the course name input after submit
+    const nameInputRef = useRef(null);
 
-    const inputRef = useRef();
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (name.trim() === "") {
-            alert("Course name is required");
-            return;
-        }
-
-        if (grade < 5 || grade > 10) {
-            alert("Grade must be between 5 and 10");
-            return;
-        }
-
-        const newCourse = {
-            id: Date.now(),
-            name,
-            credits,
-            grade,
-            attending,
-            difficulty
-        };
-
-        addCourse(newCourse);
-
-        inputRef.current.focus();
+        setFormData((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value,
+        }));
     };
 
+    // useCallback used to prevent unnecessary re-creation of submit function on re-renders
+    const handleSubmit = useCallback(
+        (e) => {
+            e.preventDefault();
+
+            // validation: name not empty + grade between 5 and 10
+            const gradeNum = Number(formData.grade);
+
+            if (formData.name.trim() === "") {
+                alert("Course name cannot be empty");
+                return;
+            }
+
+            if (gradeNum < 5 || gradeNum > 10 || isNaN(gradeNum)) {
+                alert("Grade must be a number between 5 and 10");
+                return;
+            }
+
+            const newCourse = {
+                id: Date.now(),
+                name: formData.name,
+                credits: Number(formData.credits),
+                grade: gradeNum,
+                attending: formData.attending,
+                difficulty: formData.difficulty,
+            };
+
+            onAddCourse(newCourse);
+
+            // reset form
+            setFormData({
+                name: "",
+                credits: "",
+                grade: "",
+                attending: false,
+                difficulty: "Easy",
+            });
+
+            // focus back to input after submit
+            nameInputRef.current.focus();
+        },
+        [formData, onAddCourse]
+    );
+
     return (
-        <form className="form" onSubmit={handleSubmit}>
-
-            <h3>Register New Course</h3>
+        <form onSubmit={handleSubmit}>
+            <h2>Register New Course</h2>
 
             <input
-                ref={inputRef}
+                ref={nameInputRef}
                 type="text"
+                name="name"
                 placeholder="Course name"
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={handleChange}
             />
-
-
 
             <input
                 type="number"
-                placeholder="Credit hours"
-                onChange={(e) => setCredits(Number(e.target.value))}
+                name="credits"
+                placeholder="Credits"
+                value={formData.credits}
+                onChange={handleChange}
             />
-
 
             <input
                 type="number"
+                name="grade"
                 placeholder="Grade (5-10)"
-                onChange={(e) => setGrade(Number(e.target.value))}
+                value={formData.grade}
+                onChange={handleChange}
             />
-
 
             <label>
                 <input
                     type="checkbox"
-                    onChange={(e) => setAttending(e.target.checked)}
+                    name="attending"
+                    checked={formData.attending}
+                    onChange={handleChange}
                 />
                 Attending regularly
             </label>
 
-
-            <select onChange={(e) => setDifficulty(e.target.value)}>
-                <option>Easy</option>
-                <option>Moderate</option>
-                <option>Hard</option>
+            <select
+                name="difficulty"
+                value={formData.difficulty}
+                onChange={handleChange}
+            >
+                <option value="Easy">Easy</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Hard">Hard</option>
             </select>
 
             <button type="submit">Register</button>
-
         </form>
     );
 }
-
-export default RegisterCourse;
-
